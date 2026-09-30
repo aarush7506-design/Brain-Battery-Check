@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brain Battery Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <p class="scribble">for students who run on 4% and iced coffee</p>
+  <h1>Brain Battery <span class="bolt">⚡</span> Check</h1>
+  <p class="sub">Tell us about your screen time, sleep and stress. We'll estimate your mental health score out of 10 and show how charged you are.</p>
+</header>
+
+<main class="layout">
+  <form id="predict-form" novalidate>
+
+    <fieldset class="note note-yellow">
+      <legend>🎒 The basics</legend>
+      <div class="grid g3">
+        <div class="field"><label for="age">Age</label><input type="number" id="age" name="age" min="10" max="100" placeholder="20"><span class="error-msg"></span></div>
+        <div class="field"><label for="gender">Gender</label>
+          <select id="gender" name="gender"><option value="">Pick one</option><option>Male</option><option>Female</option></select><span class="error-msg"></span></div>
+        <div class="field"><label for="academic_level">Level</label>
+          <select id="academic_level" name="academic_level"><option value="">Pick one</option><option>High School</option><option>Undergraduate</option><option>Graduate</option></select><span class="error-msg"></span></div>
+        <div class="field span"><label for="country">Country</label>
+          <input type="text" id="country" name="country" list="country-list" placeholder="India, USA, Germany…" autocomplete="off">
+          <datalist id="country-list"><option value="India"><option value="USA"><option value="Canada"><option value="Australia"><option value="UK"><option value="Germany"><option value="Mexico"><option value="Turkey"><option value="France"></datalist>
+          <span class="hint">Not on the list? Type yours anyway.</span><span class="error-msg"></span></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="note note-blue">
+      <legend>📱 Your screen life</legend>
+      <div class="grid g2">
+        <div class="field"><label for="most_used_platform">Go-to app</label>
+          <select id="most_used_platform" name="most_used_platform"><option value="">Pick one</option>
+            <option>Instagram</option><option>TikTok</option><option>YouTube</option><option>WhatsApp</option><option>Snapchat</option><option>Facebook</option><option>Twitter</option><option>LinkedIn</option><option>LINE</option><option>KakaoTalk</option><option>VKontakte</option><option>WeChat</option></select><span class="error-msg"></span></div>
+        <div class="field"><label for="purpose_of_use">Mostly used for</label>
+          <select id="purpose_of_use" name="purpose_of_use"><option value="">Pick one</option><option>Entertainment</option><option>Education</option><option>Networking</option><option>News</option></select><span class="error-msg"></span></div>
+        <div class="field"><label for="avg_daily_usage_hours">Daily social media</label>
+          <div class="unit"><input type="number" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="24" step="0.1" placeholder="4.5"><i>hrs</i></div><span class="error-msg"></span></div>
+        <div class="field"><label for="daily_unlocks">Phone unlocks a day</label>
+          <div class="unit"><input type="number" id="daily_unlocks" name="daily_unlocks" min="0" step="1" placeholder="80"><i>×</i></div><span class="error-msg"></span></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="note note-pink">
+      <legend>🌙 Real-life habits</legend>
+      <div class="grid g3">
+        <div class="field"><label for="study_hours">Study</label>
+          <div class="unit"><input type="number" id="study_hours" name="study_hours" min="0" max="24" step="0.1" placeholder="3"><i>hrs</i></div><span class="error-msg"></span></div>
+        <div class="field"><label for="physical_activity_hours">Movement</label>
+          <div class="unit"><input type="number" id="physical_activity_hours" name="physical_activity_hours" min="0" max="24" step="0.1" placeholder="1"><i>hrs</i></div><span class="error-msg"></span></div>
+        <div class="field"><label for="sleep_hours_per_night">Sleep</label>
+          <div class="unit"><input type="number" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="24" step="0.1" placeholder="7"><i>hrs</i></div><span class="error-msg"></span></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="note note-lime">
+      <legend>😵‍💫 Stress right now</legend>
+      <div class="field">
+        <div class="moods" id="stress_level_group" role="group" aria-label="Stress level">
+          <button type="button" class="mood" data-value="Low"><b>😌</b>Low</button>
+          <button type="button" class="mood" data-value="Medium"><b>😐</b>Medium</button>
+          <button type="button" class="mood" data-value="High"><b>😰</b>High</button>
+          <button type="button" class="mood" data-value="Very High"><b>🤯</b>Very high</button>
+        </div>
+        <input type="hidden" id="stress_level" name="stress_level">
+        <span class="error-msg"></span>
+      </div>
+    </fieldset>
+
+    <button type="submit" id="submit-btn" class="go-btn"><span class="btn-label">Check my battery</span><span class="btn-spin"></span></button>
+  </form>
+
+  <aside class="battery-card" aria-live="polite">
+    <div class="battery" id="battery" aria-hidden="true">
+      <div class="cells" id="cells"></div>
+    </div>
+
+    <section id="state-idle" class="state">
+      <h2>Battery unplugged</h2>
+      <p>Fill in the form and we'll plug you in.</p>
+    </section>
+
+    <section id="state-loading" class="state" hidden>
+      <h2>Charging…</h2>
+      <p>Our free server may need up to a minute to wake up on the first try.</p>
+    </section>
+
+    <section id="state-result" class="state" hidden>
+      <div class="readout"><span id="score-number">0.00</span><small>/ 10</small></div>
+      <h2 id="score-band"></h2>
+      <p id="score-context"></p>
+      <button type="button" id="reset-btn" class="again-btn">Check again</button>
+    </section>
+
+    <section id="state-error" class="state" hidden>
+      <h2 id="error-label">Short circuit</h2>
+      <p id="error-copy"></p>
+      <button type="button" id="error-retry-btn" class="again-btn">Back to the form</button>
+    </section>
+  </aside>
+</main>
+
+<footer class="foot"><p>A machine learning estimate for fun and reflection, not a diagnosis. If you're struggling, talk to someone you trust or a professional.</p></footer>
+<script src="script.js"></script>
+</body>
+</html>
