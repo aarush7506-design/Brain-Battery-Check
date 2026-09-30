@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const API_BASE = "https://mansik-santulan-score.onrender.com";
+  const API_BASE = import.meta.env.VITE_API_URL;;
 
   const $ = (id) => document.getElementById(id);
   const form = $("predict-form"), submitBtn = $("submit-btn"), battery = $("battery"), cellsEl = $("cells");
