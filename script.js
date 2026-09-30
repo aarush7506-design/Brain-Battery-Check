@@ -1,14 +1,13 @@
 (() => {
   "use strict";
 
-  const API_BASE = import.meta.env.VITE_API_URL;;
+  const API_BASE = "https://brain-battery-check.onrender.com";
 
   const $ = (id) => document.getElementById(id);
   const form = $("predict-form"), submitBtn = $("submit-btn"), battery = $("battery"), cellsEl = $("cells");
   const states = { idle: $("state-idle"), loading: $("state-loading"), result: $("state-result"), error: $("state-error") };
   const stressInput = $("stress_level");
 
-  // build 10 battery cells
   for (let i = 0; i < 10; i++) {
     const c = document.createElement("div");
     c.className = "cell";
